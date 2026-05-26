@@ -161,7 +161,7 @@ textarea:focus{border-color:#f59e0b}
     </div>
     <aside class="start-panel">
       <h2>今日出餐流程</h2>
-      <p>八道料理、五個關卡、完成後產生一張可下載的主廚明信片。</p>
+      <p>十二道料理、五個關卡、完成後產生一張可用 QR Code 取得的主廚明信片。</p>
       <div class="flow">
         <div class="flow-item"><div class="icon-dot">🥬</div><div><strong>挑出正確食材</strong><br><span>依料理需求選材料</span></div></div>
         <div class="flow-item"><div class="icon-dot">🔪</div><div><strong>切配備料</strong><br><span>每個食材切兩刀</span></div></div>
@@ -271,7 +271,7 @@ textarea:focus{border-color:#f59e0b}
 <script>
 const $=s=>document.querySelector(s);
 const asset=p=>"assets/"+p;
-const iconMap={白飯:"🍚",雞肉:"🍗",九層塔:"🌿",醬油:"🥄",蒜頭:"🧄",南瓜:"🎃",鮮奶油:"🥛",洋蔥:"🧅",高湯:"🍲",咖哩:"🍛",紅蘿蔔:"🥕",馬鈴薯:"🥔",番茄:"🍅",義大利麵:"🍝",起司:"🧀",牛肉:"🥩",黑胡椒:"⚫",青椒:"🫑",蝦仁:"🍤",雞蛋:"🥚",蔥花:"🌱",米飯:"🍚",櫛瓜:"🥒",蘑菇:"🍄",豆腐:"⬜",彩椒:"🫑"};
+const iconMap={白飯:"🍚",雞肉:"🍗",九層塔:"🌿",醬油:"🥄",蒜頭:"🧄",南瓜:"🎃",鮮奶油:"🥛",洋蔥:"🧅",高湯:"🍲",咖哩:"🍛",紅蘿蔔:"🥕",馬鈴薯:"🥔",番茄:"🍅",義大利麵:"🍝",起司:"🧀",牛肉:"🥩",黑胡椒:"⚫",青椒:"🫑",蝦仁:"🍤",雞蛋:"🥚",蔥花:"🌱",米飯:"🍚",櫛瓜:"🥒",蘑菇:"🍄",豆腐:"⬜",彩椒:"🫑",粉絲:"🍜",蛤蜊:"🦪",魷魚:"🦑",青蔥:"🌱",大腸:"🥘",薑絲:"🫚",辣椒:"🌶️",白菜:"🥬",紅酒:"🍷"};
 const dishes=[
  {id:"curry",name:"咖哩飯",img:"dish-curry-rice.png",menuImg:"menu-curry-illustration.png",intro:"金黃咖哩包住白飯，適合第一位出餐的暖心料理。",ingredients:["白飯","咖哩","雞肉","紅蘿蔔","馬鈴薯"],plate:"把咖哩淋在白飯旁，保留一點金黃流動感。"},
  {id:"risotto",name:"蔬菜燉飯",img:"dish-veggie-risotto.png",menuImg:"menu-risotto-illustration.png",intro:"米飯吸滿蔬菜香氣，完成一盤柔和的義式燉飯。",ingredients:["米飯","蘑菇","櫛瓜","起司","洋蔥"],plate:"讓米粒鋪成圓形，再用綠色蔬菜點出層次。"},
@@ -280,7 +280,11 @@ const dishes=[
  {id:"shrimp",name:"鮮蝦蛋炒飯",img:"dish-shrimp-fried-rice.png",menuImg:"menu-shrimp-illustration.png",intro:"炒飯要粒粒分明，鮮蝦和蛋香是通關重點。",ingredients:["米飯","蝦仁","雞蛋","蔥花","蒜頭"],plate:"炒飯堆成小山，鮮蝦擺在最醒目的位置。"},
  {id:"chicken",name:"三杯塔香雞丁",img:"dish-three-cup-chicken.png",menuImg:"menu-chicken-illustration.png",intro:"醬香、九層塔、雞丁一起爆香，收汁後最迷人。",ingredients:["雞肉","九層塔","醬油","蒜頭","洋蔥"],plate:"雞丁集中上色，九層塔放在頂端完成香氣。"},
  {id:"soup",name:"南瓜濃湯",img:"dish-pumpkin-soup.png",menuImg:"menu-soup-illustration.png",intro:"南瓜煮到綿密，奶香和高湯讓濃湯更順口。",ingredients:["南瓜","鮮奶油","洋蔥","高湯","蒜頭"],plate:"濃湯保持平滑，中心用奶油線條點亮。"},
- {id:"tofu",name:"香煎蔬菜豆腐",img:"dish-pan-fried-veggie-tofu.png",menuImg:"menu-tofu-illustration.png",intro:"豆腐外酥內嫩，彩色蔬菜讓擺盤更清爽。",ingredients:["豆腐","櫛瓜","彩椒","蘑菇","醬油"],plate:"豆腐排成主角，蔬菜在旁邊做成彩色邊線。"}
+ {id:"tofu",name:"香煎蔬菜豆腐",img:"dish-pan-fried-veggie-tofu.png",menuImg:"menu-tofu-illustration.png",intro:"豆腐外酥內嫩，彩色蔬菜讓擺盤更清爽。",ingredients:["豆腐","櫛瓜","彩椒","蘑菇","醬油"],plate:"豆腐排成主角，蔬菜在旁邊做成彩色邊線。"},
+ {id:"seafood-pot",name:"海鮮粉絲豆腐煲",img:"dish-seafood-vermicelli-tofu-pot.png",menuImg:"dish-seafood-vermicelli-tofu-pot.png",intro:"粉絲吸滿海味湯汁，豆腐和海鮮一起煲出熱騰騰香氣。",ingredients:["粉絲","豆腐","蝦仁","蛤蜊","魷魚"],plate:"粉絲鋪底，豆腐和海鮮露出層次，最後撒上青蔥。"},
+ {id:"ginger-intestine",name:"薑絲大腸",img:"dish-ginger-intestine.png",menuImg:"dish-ginger-intestine.png",intro:"薑絲酸香提味，大腸快炒到入味彈牙。",ingredients:["大腸","薑絲","青蔥","辣椒","醬油"],plate:"大腸集中成堆，薑絲和青蔥交錯在上方提亮。"},
+ {id:"creamy-napa",name:"雞肉奶油燉白菜",img:"dish-creamy-chicken-napa.png",menuImg:"dish-creamy-chicken-napa.png",intro:"奶油湯汁包住雞肉和白菜，口感柔和溫暖。",ingredients:["雞肉","白菜","鮮奶油","蘑菇","高湯"],plate:"白菜鋪出柔軟線條，雞肉置中，奶油醬汁保持乾淨。"},
+ {id:"red-wine-beef",name:"紅酒燉牛肉",img:"dish-red-wine-beef.png",menuImg:"dish-red-wine-beef.png",intro:"牛肉慢燉到軟嫩，紅酒醬汁帶出深色香氣。",ingredients:["牛肉","紅酒","紅蘿蔔","蘑菇","洋蔥"],plate:"牛肉塊放在中央，紅蘿蔔和蘑菇圍出濃郁層次。"}
 ];
 const levels=[
  {key:"ingredients",title:"挑選食材",img:"level-1.png",banner:"BENNER/level-1-banner.png",hint:"從食材區選出這道料理真正需要的材料。"},
@@ -318,10 +322,11 @@ function basePlatingPlan(){let d=dish();return[
  {id:"base",label:"放上大盤子",img:"plating/plate.png",x:50,y:54,size:250,targetSize:220,kind:"plate-base",tip:"先點大盤子，再點桌面中央的目標圈。"},
  {id:"sauce",label:"淋上醬汁",img:"plating/sauce.png",x:41,y:58,size:108,targetSize:68,kind:"sauce",tip:"醬汁會落在盤中左下方，靠近主食但不蓋住主角。"},
  {id:"main",label:"主食核心",img:"plating/main.png",x:52,y:53,size:122,targetSize:72,kind:"main",tip:"主食要放在盤中央，決定整盤視覺重心。"},
+ {id:"side",label:"擺放配菜",img:"plating/side.png",x:64,y:47,size:74,targetSize:54,kind:"side",tip:"配菜放在盤中右上方，補上顏色和層次。"},
  {id:"herb",label:"撒上香草",img:"plating/herb.png",x:58,y:41,size:66,targetSize:52,kind:"garnish",tip:"香草放在盤中上方，讓成品更有新鮮感。"},
- {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:51,y:73,size:78,targetSize:56,kind:"decor",tip:"裝飾放在盤中下緣，讓畫面更完整。"},
- {id:"fork",label:"左側餐叉",img:"plating/fork.png",x:31,y:55,size:98,targetSize:52,kind:"utensil",tip:"餐叉擺在盤子左側，位置要靠近盤緣。"},
- {id:"knife",label:"右側餐刀",img:"plating/knife.png",x:69,y:55,size:104,targetSize:52,kind:"utensil",tip:"餐刀擺在盤子右側，位置要靠近盤緣。"}
+ {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:68,y:65,size:70,targetSize:52,kind:"decor",tip:"裝飾放在盤子右邊，讓桌面更完整。"},
+ {id:"fork",label:"左側餐叉",img:"plating/fork.png",x:33,y:55,size:72,targetSize:46,kind:"utensil",tip:"餐叉擺在盤子左側，位置要靠近盤緣。"},
+ {id:"knife",label:"右側餐刀",img:"plating/knife.png",x:67,y:55,size:76,targetSize:46,kind:"utensil",tip:"餐刀擺在盤子右側，位置要靠近盤緣。"}
 ]}
 function shuffleList(list){let a=[...list];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function platingPlan(){if(!S.plateOrder.length){let plan=basePlatingPlan();S.plateOrder=[plan[0],...shuffleList(plan.slice(1))]}return S.plateOrder}
