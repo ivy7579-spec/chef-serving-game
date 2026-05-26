@@ -2,3 +2,5 @@ desktop.ini
 preview*.html
 *.png
 !assets/*.png
+!BENNER/
+!BENNER/*.png
