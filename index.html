@@ -41,12 +41,12 @@ h1{margin:16px 0 10px;font-size:clamp(42px,6vw,78px);line-height:.96;letter-spac
 .dish-card{padding:0;background:#fff;border:2px solid transparent;border-radius:8px;overflow:hidden;text-align:left;color:inherit;box-shadow:0 10px 28px rgba(96,52,27,.08);transition:.18s}
 .dish-card:hover{transform:translateY(-2px);border-color:#f0b18d}
 .dish-card.active{border-color:var(--accent);box-shadow:0 16px 36px rgba(225,95,48,.2)}
-.menu-illo{width:100%;aspect-ratio:4/3;background-image:url("assets/menu-handdrawn-sheet.png");background-size:400% 200%;background-repeat:no-repeat;background-color:#fbf1dd}
-.dish-card .menu-illo{border-bottom:1px solid #f0e4d6}
+.dish-card img,.menu-preview-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#fbf1dd}
+.dish-card img{border-bottom:1px solid #f0e4d6}
 .dish-card-content{padding:12px}
 .dish-card h3{margin:0 0 6px;font-size:17px}
 .dish-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
-.menu-illo.large{border-radius:8px;box-shadow:0 16px 34px rgba(96,52,27,.12);border:1px solid #f0e4d6}
+.menu-preview-img{border-radius:8px;box-shadow:0 16px 34px rgba(96,52,27,.12);border:1px solid #f0e4d6}
 .ingredient-cloud{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:#fff7ed;border:1px solid #fed7aa;font-weight:800;font-size:13px}
 .btn{width:100%;min-height:50px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;font-weight:900;text-decoration:none;transition:.18s}
@@ -106,6 +106,7 @@ h1{margin:16px 0 10px;font-size:clamp(42px,6vw,78px);line-height:.96;letter-spac
 .plate-zone{position:relative;min-height:390px;border-radius:8px;background:linear-gradient(135deg,#f5d6b1,#e5ad73);border:1px solid #d99555;overflow:hidden;box-shadow:inset 0 0 0 12px rgba(255,255,255,.18),inset 0 -22px 46px rgba(94,48,18,.16)}
 .plate-zone:before{content:"";position:absolute;left:50%;top:54%;width:310px;height:310px;transform:translate(-50%,-50%);border-radius:999px;background:radial-gradient(circle at 50% 47%,#fff 0 48%,#f7efe4 49% 64%,#fff 65%);box-shadow:0 24px 48px rgba(96,52,27,.18),inset 0 0 0 5px rgba(232,217,202,.65)}
 .plate-zone:after{content:"";position:absolute;inset:18px;border-radius:8px;border:1px dashed rgba(123,72,36,.22);pointer-events:none}
+.plate-zone.drop-ready{outline:4px solid rgba(21,134,108,.28)}
 .target-ring{position:absolute;border:3px dashed rgba(225,95,48,.55);border-radius:999px;animation:pulse 1.1s infinite ease-in-out}
 @keyframes pulse{50%{transform:scale(1.08);opacity:.72}}
 .placed{position:absolute;z-index:2;display:grid;place-items:center;border-radius:999px;background:rgba(255,255,255,.82);box-shadow:0 12px 24px rgba(96,52,27,.16);font-size:32px}
@@ -116,6 +117,7 @@ h1{margin:16px 0 10px;font-size:clamp(42px,6vw,78px);line-height:.96;letter-spac
 .beauty-card small{display:block;color:#8b8178;font-size:11px;font-weight:900}.beauty-card strong{display:block;margin-top:3px;font-size:20px;color:#201a17}
 .plating-tools{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
 .plating-token.used{opacity:.35;filter:grayscale(1);pointer-events:none}
+.plating-token{cursor:grab}.plating-token:active{cursor:grabbing}
 .postcard-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px}
 .postcard{position:relative;min-height:640px;border-radius:8px;background:#fffaf3;border:2px dashed #f59e0b;padding:22px;display:grid;grid-template-columns:.82fr 1.18fr;gap:18px;overflow:hidden;box-shadow:inset 0 0 0 10px rgba(255,255,255,.45)}
 .postcard:before{content:"";position:absolute;left:0;right:0;top:0;height:12px;background:repeating-linear-gradient(90deg,#dc2626 0 18px,#fff 18px 36px,#2563eb 36px 54px,#fff 54px 72px)}
@@ -130,7 +132,7 @@ label{display:block;margin:14px 0 8px;font-weight:900}
 textarea,input[type=email]{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff;outline:none}
 textarea{min-height:132px;resize:vertical}
 textarea:focus,input[type=email]:focus{border-color:#f59e0b}
-.mail-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.mail-buttons{display:grid;grid-template-columns:1.25fr .75fr;gap:10px;margin-top:10px}
 .actions{display:flex;gap:10px;margin-top:14px}.actions .btn{margin:0}
 @media(max-width:980px){.home,.grid,.game-layout,.postcard-grid,.postcard{grid-template-columns:1fr}.home-visual{min-height:540px}.dish-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.app{width:min(100% - 18px,1180px);padding-top:10px}.home-visual{min-height:520px}.home-copy{left:18px;right:18px;bottom:20px}.topbar{align-items:flex-start;flex-direction:column}.dish-grid,.ingredient-grid,.heat-buttons,.plating-tools{grid-template-columns:1fr 1fr}.level-head{display:block}.post-left h2{font-size:30px}}
@@ -171,7 +173,7 @@ textarea:focus,input[type=email]:focus{border-color:#f59e0b}
         <div id="dishGrid" class="dish-grid"></div>
       </div></article>
       <aside class="card side-preview"><div class="card-pad">
-        <div id="menuDishIllustration" class="menu-illo large" role="img" aria-label="目前選擇料理手繪插圖"></div>
+        <img id="menuDishIllustration" class="menu-preview-img" src="assets/menu-curry-illustration.png" alt="目前選擇料理手繪插圖">
         <h2 id="menuDishTitle" class="section-title" style="margin-top:16px"></h2>
         <p id="menuDishIntro" style="color:var(--muted);line-height:1.75;margin:0"></p>
         <div id="menuIngredients" class="ingredient-cloud"></div>
@@ -243,7 +245,7 @@ textarea:focus,input[type=email]:focus{border-color:#f59e0b}
         <label for="emailInput">收件 Email</label>
         <input id="emailInput" type="email" placeholder="name@example.com">
         <div class="mail-buttons">
-          <button id="mailBtn" class="btn secondary" type="button">寄出 Email</button>
+          <button id="mailBtn" class="btn primary" type="button">寄出 MAIL</button>
           <button id="gmailBtn" class="btn ghost" type="button">開 Gmail</button>
         </div>
         <div class="actions">
@@ -262,14 +264,14 @@ const $=s=>document.querySelector(s);
 const asset=p=>"assets/"+p;
 const iconMap={白飯:"🍚",雞肉:"🍗",九層塔:"🌿",醬油:"🥄",蒜頭:"🧄",南瓜:"🎃",鮮奶油:"🥛",洋蔥:"🧅",高湯:"🍲",咖哩:"🍛",紅蘿蔔:"🥕",馬鈴薯:"🥔",番茄:"🍅",義大利麵:"🍝",起司:"🧀",牛肉:"🥩",黑胡椒:"⚫",青椒:"🫑",蝦仁:"🍤",雞蛋:"🥚",蔥花:"🌱",米飯:"🍚",櫛瓜:"🥒",蘑菇:"🍄",豆腐:"⬜",彩椒:"🫑"};
 const dishes=[
- {id:"curry",name:"咖哩飯",img:"dish-curry-rice.png",sheetX:0,sheetY:0,intro:"金黃咖哩包住白飯，適合第一位出餐的暖心料理。",ingredients:["白飯","咖哩","雞肉","紅蘿蔔","馬鈴薯"],plate:"把咖哩淋在白飯旁，保留一點金黃流動感。"},
- {id:"risotto",name:"蔬菜燉飯",img:"dish-veggie-risotto.png",sheetX:1,sheetY:0,intro:"米飯吸滿蔬菜香氣，完成一盤柔和的義式燉飯。",ingredients:["米飯","蘑菇","櫛瓜","起司","洋蔥"],plate:"讓米粒鋪成圓形，再用綠色蔬菜點出層次。"},
- {id:"pasta",name:"番茄奶香義麵",img:"dish-tomato-cream-pasta.png",sheetX:2,sheetY:0,intro:"番茄酸甜和奶香交在一起，麵條要收得滑順。",ingredients:["義大利麵","番茄","鮮奶油","起司","蒜頭"],plate:"麵條捲高，最後撒上起司和番茄色澤。"},
- {id:"beef",name:"黑胡椒牛肉飯",img:"dish-black-pepper-beef-rice.png",sheetX:3,sheetY:0,intro:"牛肉大火快炒，黑胡椒香氣是這道菜的主角。",ingredients:["白飯","牛肉","黑胡椒","青椒","洋蔥"],plate:"牛肉集中在飯旁，醬汁做出飽滿的深色光澤。"},
- {id:"shrimp",name:"鮮蝦蛋炒飯",img:"dish-shrimp-fried-rice.png",sheetX:0,sheetY:1,intro:"炒飯要粒粒分明，鮮蝦和蛋香是通關重點。",ingredients:["米飯","蝦仁","雞蛋","蔥花","蒜頭"],plate:"炒飯堆成小山，鮮蝦擺在最醒目的位置。"},
- {id:"chicken",name:"三杯塔香雞丁",img:"dish-three-cup-chicken.png",sheetX:1,sheetY:1,intro:"醬香、九層塔、雞丁一起爆香，收汁後最迷人。",ingredients:["雞肉","九層塔","醬油","蒜頭","洋蔥"],plate:"雞丁集中上色，九層塔放在頂端完成香氣。"},
- {id:"soup",name:"南瓜濃湯",img:"dish-pumpkin-soup.png",sheetX:2,sheetY:1,intro:"南瓜煮到綿密，奶香和高湯讓濃湯更順口。",ingredients:["南瓜","鮮奶油","洋蔥","高湯","蒜頭"],plate:"濃湯保持平滑，中心用奶油線條點亮。"},
- {id:"tofu",name:"香煎蔬菜豆腐",img:"dish-pan-fried-veggie-tofu.png",sheetX:3,sheetY:1,intro:"豆腐外酥內嫩，彩色蔬菜讓擺盤更清爽。",ingredients:["豆腐","櫛瓜","彩椒","蘑菇","醬油"],plate:"豆腐排成主角，蔬菜在旁邊做成彩色邊線。"}
+ {id:"curry",name:"咖哩飯",img:"dish-curry-rice.png",menuImg:"menu-curry-illustration.png",intro:"金黃咖哩包住白飯，適合第一位出餐的暖心料理。",ingredients:["白飯","咖哩","雞肉","紅蘿蔔","馬鈴薯"],plate:"把咖哩淋在白飯旁，保留一點金黃流動感。"},
+ {id:"risotto",name:"蔬菜燉飯",img:"dish-veggie-risotto.png",menuImg:"menu-risotto-illustration.png",intro:"米飯吸滿蔬菜香氣，完成一盤柔和的義式燉飯。",ingredients:["米飯","蘑菇","櫛瓜","起司","洋蔥"],plate:"讓米粒鋪成圓形，再用綠色蔬菜點出層次。"},
+ {id:"pasta",name:"番茄奶香義麵",img:"dish-tomato-cream-pasta.png",menuImg:"menu-pasta-illustration.png",intro:"番茄酸甜和奶香交在一起，麵條要收得滑順。",ingredients:["義大利麵","番茄","鮮奶油","起司","蒜頭"],plate:"麵條捲高，最後撒上起司和番茄色澤。"},
+ {id:"beef",name:"黑胡椒牛肉飯",img:"dish-black-pepper-beef-rice.png",menuImg:"menu-beef-illustration.png",intro:"牛肉大火快炒，黑胡椒香氣是這道菜的主角。",ingredients:["白飯","牛肉","黑胡椒","青椒","洋蔥"],plate:"牛肉集中在飯旁，醬汁做出飽滿的深色光澤。"},
+ {id:"shrimp",name:"鮮蝦蛋炒飯",img:"dish-shrimp-fried-rice.png",menuImg:"menu-shrimp-illustration.png",intro:"炒飯要粒粒分明，鮮蝦和蛋香是通關重點。",ingredients:["米飯","蝦仁","雞蛋","蔥花","蒜頭"],plate:"炒飯堆成小山，鮮蝦擺在最醒目的位置。"},
+ {id:"chicken",name:"三杯塔香雞丁",img:"dish-three-cup-chicken.png",menuImg:"menu-chicken-illustration.png",intro:"醬香、九層塔、雞丁一起爆香，收汁後最迷人。",ingredients:["雞肉","九層塔","醬油","蒜頭","洋蔥"],plate:"雞丁集中上色，九層塔放在頂端完成香氣。"},
+ {id:"soup",name:"南瓜濃湯",img:"dish-pumpkin-soup.png",menuImg:"menu-soup-illustration.png",intro:"南瓜煮到綿密，奶香和高湯讓濃湯更順口。",ingredients:["南瓜","鮮奶油","洋蔥","高湯","蒜頭"],plate:"濃湯保持平滑，中心用奶油線條點亮。"},
+ {id:"tofu",name:"香煎蔬菜豆腐",img:"dish-pan-fried-veggie-tofu.png",menuImg:"menu-tofu-illustration.png",intro:"豆腐外酥內嫩，彩色蔬菜讓擺盤更清爽。",ingredients:["豆腐","櫛瓜","彩椒","蘑菇","醬油"],plate:"豆腐排成主角，蔬菜在旁邊做成彩色邊線。"}
 ];
 const levels=[
  {key:"ingredients",title:"挑選食材",img:"level-1.png",hint:"從食材區選出這道料理真正需要的材料。"},
@@ -289,9 +291,7 @@ function stopHeat(){if(S.heatTimer){clearInterval(S.heatTimer);S.heatTimer=null}
 function resetRun(){Object.assign(S,{level:0,chosen:[],cutIndex:0,cutHits:0,cutTotal:0,cutMove:false,needle:8,dir:1,aromaScore:0,heatTemp:24,heatPower:0,heatStage:0,heatProgress:[0,0,0],plateIndex:0,placed:[],plateMistakes:0,status:"",email:""});prepOptions();stopAroma();stopHeat();if($("#emailInput"))$("#emailInput").value=""}
 function prepOptions(){let d=dish();S.options=shuffle([...d.ingredients,...shuffle(wrongIngredients.filter(x=>!d.ingredients.includes(x))).slice(0,7)])}
 function setScreen(name){S.screen=name;["home","menu","game","postcard"].forEach(n=>$("#"+n+"Screen").classList.toggle("hidden",n!==name));if(name!=="game")stopAroma(),stopHeat()}
-function sheetPos(d){return `${d.sheetX*33.3333}% ${d.sheetY*100}%`}
-function illoStyle(d){return `background-position:${sheetPos(d)}`}
-function renderMenu(){let d=dish();$("#currentDishPill").textContent="目前料理："+d.name;$("#dishGrid").innerHTML=dishes.map(x=>`<button class="dish-card ${x.id===S.dishId?"active":""}" type="button" data-dish="${x.id}"><div class="menu-illo" style="${illoStyle(x)}" role="img" aria-label="${x.name}手繪插圖"></div><div class="dish-card-content"><h3>${x.name}</h3><p>${x.ingredients.map(icon).join(" ")} ${x.ingredients.join("、")}</p></div></button>`).join("");document.querySelectorAll("[data-dish]").forEach(b=>b.onclick=()=>{S.dishId=b.dataset.dish;resetRun();renderMenu()});$("#menuDishIllustration").style.backgroundPosition=sheetPos(d);$("#menuDishTitle").textContent=d.name;$("#menuDishIntro").textContent=d.intro;$("#menuIngredients").innerHTML=d.ingredients.map(i=>`<span class="chip">${icon(i)} ${i}</span>`).join("")}
+function renderMenu(){let d=dish();$("#currentDishPill").textContent="目前料理："+d.name;$("#dishGrid").innerHTML=dishes.map(x=>`<button class="dish-card ${x.id===S.dishId?"active":""}" type="button" data-dish="${x.id}"><img src="${asset(x.menuImg)}" alt="${x.name}手繪插圖"><div class="dish-card-content"><h3>${x.name}</h3><p>${x.ingredients.map(icon).join(" ")} ${x.ingredients.join("、")}</p></div></button>`).join("");document.querySelectorAll("[data-dish]").forEach(b=>b.onclick=()=>{S.dishId=b.dataset.dish;resetRun();renderMenu()});$("#menuDishIllustration").src=asset(d.menuImg);$("#menuDishIllustration").alt=d.name+"手繪插圖";$("#menuDishTitle").textContent=d.name;$("#menuDishIntro").textContent=d.intro;$("#menuIngredients").innerHTML=d.ingredients.map(i=>`<span class="chip">${icon(i)} ${i}</span>`).join("")}
 function renderSteps(){let h=levels.map((l,i)=>`<div class="step-row ${i<S.level?"done":i===S.level?"current":""}"><span>第 ${i+1} 關 ${l.title}</span><span>${i<S.level?"完成":i===S.level?"進行中":"待挑戰"}</span></div>`).join("");$("#steps").innerHTML=h}
 function progress(){let d=dish(),key=levels[S.level].key;if(key==="ingredients")return S.chosen.filter(x=>d.ingredients.includes(x)).length/d.ingredients.length;if(key==="cut")return S.cutTotal/(d.ingredients.length*2);if(key==="aroma")return S.aromaScore/3;if(key==="heat")return (S.heatProgress.reduce((a,b)=>a+b,0))/300;if(key==="plate")return S.plateIndex/platingPlan().length;return 0}
 function canNext(){let d=dish(),key=levels[S.level].key;if(key==="ingredients")return S.chosen.length===d.ingredients.length&&d.ingredients.every(i=>S.chosen.includes(i));if(key==="cut")return S.cutTotal>=d.ingredients.length*2;if(key==="aroma")return S.aromaScore>=3;if(key==="heat")return S.heatStage>=heatStages.length;if(key==="plate")return S.plateIndex>=platingPlan().length;return false}
@@ -311,9 +311,10 @@ function platingPlan(){let d=dish();return[
  {id:"highlight",label:"主廚亮點",icon:"💫",x:64,y:35,size:42,kind:"highlight",tip:"收尾讓盤面更有完成感。"}
 ]}
 function platingChoices(){let decoys=[{id:"fork",label:"餐叉裝飾",icon:"🍴"},{id:"tooMuch",label:"過多醬汁",icon:"🫗"},{id:"salt",label:"灑太多鹽",icon:"🧂"}];return [...platingPlan(),...decoys]}
-function beautyScore(){return Math.max(0,100-S.plateMistakes*12)}
-function htmlPlate(){let plan=platingPlan(),tar=plan[S.plateIndex],ring=tar?`<div class="target-ring" style="left:calc(${tar.x}% - ${tar.size/2}px);top:calc(${tar.y}% - ${tar.size/2}px);width:${tar.size}px;height:${tar.size}px"></div>`:"";let score=beautyScore();return `<div class="hint">${tar?`下一步：${tar.icon} ${tar.label}。${tar.tip}`:"擺盤完成，準備生成明信片。"}</div><div class="beauty-row"><div class="beauty-card"><small>美感分</small><strong>${score}</strong></div><div class="beauty-card"><small>擺盤步驟</small><strong>${S.plateIndex}/${plan.length}</strong></div><div class="beauty-card"><small>失誤</small><strong>${S.plateMistakes}</strong></div></div><div class="plate-zone">${ring}${S.placed.map(p=>`<div class="placed ${p.kind||""}" style="left:calc(${p.x}% - ${p.size/2}px);top:calc(${p.y}% - ${p.size/2}px);width:${p.size}px;height:${p.size}px">${p.icon}</div>`).join("")}</div><div class="plating-tools">${platingChoices().map(p=>`<button class="plating-token ${S.placed.some(x=>x.id===p.id)?"used":""}" type="button" data-plate="${p.id}">${p.icon}<br>${p.label}</button>`).join("")}</div><div class="status ${S.status==="good"?"good":S.status==="bad"?"bad":""}" style="margin-top:12px">${S.status==="bad"?"這個會破壞盤面節奏，請照提示找正確元素。":tar?"選對順序才能保住美感分。":"完美擺盤，明信片會更漂亮。"}</div>`}
-function bindLevel(){let key=levels[S.level].key;if(key==="ingredients")document.querySelectorAll("[data-ing]").forEach(b=>b.onclick=()=>{let v=b.dataset.ing;S.chosen=S.chosen.includes(v)?S.chosen.filter(x=>x!==v):[...S.chosen,v];renderGame()});if(key==="cut")$("#cutBoard").onclick=()=>{let d=dish();if(S.cutTotal>=d.ingredients.length*2)return;S.cutMove=true;S.cutHits++;S.cutTotal++;if(S.cutHits>=2){S.cutHits=0;S.cutIndex=Math.min(S.cutIndex+1,d.ingredients.length-1)}renderGame();setTimeout(()=>{S.cutMove=false;renderGame()},260)};if(key==="aroma"){$("#stirBtn").onclick=()=>{let ok=S.needle>=43&&S.needle<=61;S.status=ok?"good":"bad";S.aromaScore=Math.max(0,Math.min(3,S.aromaScore+(ok?1:-1)));renderGame()};startAroma()}if(key==="heat"){document.querySelectorAll("[data-heat]").forEach(b=>b.onclick=()=>{S.heatPower=+b.dataset.heat;startHeat();renderGame()});startHeat()}if(key==="plate")document.querySelectorAll("[data-plate]").forEach(b=>b.onclick=()=>{let plan=platingPlan(),tar=plan[S.plateIndex];if(!tar)return;if(b.dataset.plate===tar.id){S.placed.push(tar);S.plateIndex++;S.status="good"}else{S.plateMistakes++;S.status="bad"}renderGame()})}
+function beautyScore(){let offset=S.placed.reduce((sum,p)=>sum+(p.penalty||0),0);return Math.max(0,100-S.plateMistakes*12-offset)}
+function placePlate(id,x=null,y=null){let plan=platingPlan(),tar=plan[S.plateIndex];if(!tar)return;if(id!==tar.id){S.plateMistakes++;S.status="bad";renderGame();return}let px=x??tar.x,py=y??tar.y,dist=Math.hypot(px-tar.x,py-tar.y);if(x!==null&&dist>18){S.plateMistakes++;S.status="bad";renderGame();return}let penalty=dist>10?4:0;S.placed.push({...tar,x:px,y:py,penalty});S.plateIndex++;S.status=penalty?"good":"perfect";renderGame()}
+function htmlPlate(){let plan=platingPlan(),tar=plan[S.plateIndex],ring=tar?`<div class="target-ring" style="left:calc(${tar.x}% - ${tar.size/2}px);top:calc(${tar.y}% - ${tar.size/2}px);width:${tar.size}px;height:${tar.size}px"></div>`:"";let score=beautyScore();return `<div class="hint">${tar?`拖曳「${tar.icon} ${tar.label}」到盤面目標圈。${tar.tip}`:"擺盤完成，準備生成明信片。"}</div><div class="beauty-row"><div class="beauty-card"><small>美感分</small><strong>${score}</strong></div><div class="beauty-card"><small>擺盤步驟</small><strong>${S.plateIndex}/${plan.length}</strong></div><div class="beauty-card"><small>失誤</small><strong>${S.plateMistakes}</strong></div></div><div id="plateZone" class="plate-zone">${ring}${S.placed.map(p=>`<div class="placed ${p.kind||""}" style="left:calc(${p.x}% - ${p.size/2}px);top:calc(${p.y}% - ${p.size/2}px);width:${p.size}px;height:${p.size}px">${p.icon}</div>`).join("")}</div><div class="plating-tools">${platingChoices().map(p=>`<button class="plating-token ${S.placed.some(x=>x.id===p.id)?"used":""}" type="button" draggable="true" data-plate="${p.id}">${p.icon}<br>${p.label}</button>`).join("")}</div><div class="status ${S.status==="perfect"||S.status==="good"?"good":S.status==="bad"?"bad":""}" style="margin-top:12px">${S.status==="perfect"?"精準落點，美感分保住了。":S.status==="good"?"可以，位置稍微偏一點但仍可上菜。":S.status==="bad"?"放錯或離目標太遠，請看目標圈再試一次。":tar?"拖曳到目標圈附近才算成功。":"完美擺盤，明信片會更漂亮。"}</div>`}
+function bindLevel(){let key=levels[S.level].key;if(key==="ingredients")document.querySelectorAll("[data-ing]").forEach(b=>b.onclick=()=>{let v=b.dataset.ing;S.chosen=S.chosen.includes(v)?S.chosen.filter(x=>x!==v):[...S.chosen,v];renderGame()});if(key==="cut")$("#cutBoard").onclick=()=>{let d=dish();if(S.cutTotal>=d.ingredients.length*2)return;S.cutMove=true;S.cutHits++;S.cutTotal++;if(S.cutHits>=2){S.cutHits=0;S.cutIndex=Math.min(S.cutIndex+1,d.ingredients.length-1)}renderGame();setTimeout(()=>{S.cutMove=false;renderGame()},260)};if(key==="aroma"){$("#stirBtn").onclick=()=>{let ok=S.needle>=43&&S.needle<=61;S.status=ok?"good":"bad";S.aromaScore=Math.max(0,Math.min(3,S.aromaScore+(ok?1:-1)));renderGame()};startAroma()}if(key==="heat"){document.querySelectorAll("[data-heat]").forEach(b=>b.onclick=()=>{S.heatPower=+b.dataset.heat;startHeat();renderGame()});startHeat()}if(key==="plate"){let board=$("#plateZone");document.querySelectorAll("[data-plate]").forEach(b=>{b.onclick=()=>placePlate(b.dataset.plate);b.ondragstart=e=>{e.dataTransfer.setData("text/plain",b.dataset.plate);board.classList.add("drop-ready")};b.ondragend=()=>board.classList.remove("drop-ready")});board.ondragover=e=>{e.preventDefault();board.classList.add("drop-ready")};board.ondragleave=()=>board.classList.remove("drop-ready");board.ondrop=e=>{e.preventDefault();board.classList.remove("drop-ready");let id=e.dataTransfer.getData("text/plain"),r=board.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;if(id)placePlate(id,x,y)}}}
 function renderGame(){let l=levels[S.level],d=dish();$("#gameDishPill").textContent=d.name;$("#levelImage").src=asset(l.img);$("#levelCount").textContent=`第 ${S.level+1} 關 / ${levels.length}`;$("#levelTitle").textContent=l.title;$("#levelHint").textContent=l.hint;$("#progressBar").style.width=Math.round(progress()*100)+"%";renderSteps();let html="";if(l.key==="ingredients")html=htmlIngredients();if(l.key==="cut")html=htmlCut();if(l.key==="aroma")html=htmlAroma();if(l.key==="heat")html=htmlHeat();if(l.key==="plate")html=htmlPlate();$("#levelContent").innerHTML=html;$("#prevBtn").disabled=S.level===0;$("#nextBtn").disabled=!canNext();$("#nextBtn").textContent=S.level===levels.length-1?"生成明信片":"下一關";bindLevel()}
 function renderPostcard(){let d=dish(),msg=$("#messageInput").value.trim()||"今天完成了一道料理，把香氣和成就感一起收藏。";$("#postDishPill").textContent=d.name;$("#postTitle").textContent=d.name;$("#postMessage").textContent=msg;$("#postImage").src=asset(d.img);$("#postChips").innerHTML=d.ingredients.map(i=>`<span class="chip">${icon(i)} ${i}</span>`).join("")}
 function validEmail(email){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
