@@ -295,13 +295,13 @@ const levels=[
 ];
 const wrongIngredients=["高麗菜","玉米","培根","檸檬","香菜","青花菜","辣椒","奶油","花椰菜","蘋果","海苔","芝麻"];
 const heatStages=[{name:"小火入味",min:35,max:47},{name:"中火收汁",min:55,max:68},{name:"大火上色",min:76,max:88}];
-const S={dishId:dishes[0].id,screen:"home",level:0,chosen:[],options:[],cutIndex:0,cutHits:0,cutTotal:0,cutMove:false,needle:8,dir:1,aromaScore:0,aromaTimer:null,heatTemp:24,heatPower:0,heatStage:0,heatProgress:[0,0,0],heatTimer:null,plateIndex:0,plateOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:0,plateTimer:null,status:"",cloudUrl:"",cloudBusy:false};
+const S={dishId:dishes[0].id,screen:"home",level:0,chosen:[],options:[],cutIndex:0,cutHits:0,cutTotal:0,cutMove:false,needle:8,dir:1,aromaScore:0,aromaTimer:null,heatTemp:24,heatPower:0,heatStage:0,heatProgress:[0,0,0],heatTimer:null,plateIndex:0,plateOrder:[],plateChoiceOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:0,plateTimer:null,status:"",cloudUrl:"",cloudBusy:false};
 function dish(){return dishes.find(d=>d.id===S.dishId)||dishes[0]}
 function icon(name){return iconMap[name]||"🥣"}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function stopAroma(){if(S.aromaTimer){clearInterval(S.aromaTimer);S.aromaTimer=null}}
 function stopHeat(){if(S.heatTimer){clearInterval(S.heatTimer);S.heatTimer=null}}
-function resetRun(){Object.assign(S,{level:0,chosen:[],cutIndex:0,cutHits:0,cutTotal:0,cutMove:false,needle:8,dir:1,aromaScore:0,heatTemp:24,heatPower:0,heatStage:0,heatProgress:[0,0,0],plateIndex:0,plateOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:0,status:"",cloudUrl:"",cloudBusy:false});prepOptions();stopAroma();stopHeat();stopPlate();resetCloudQr()}
+function resetRun(){Object.assign(S,{level:0,chosen:[],cutIndex:0,cutHits:0,cutTotal:0,cutMove:false,needle:8,dir:1,aromaScore:0,heatTemp:24,heatPower:0,heatStage:0,heatProgress:[0,0,0],plateIndex:0,plateOrder:[],plateChoiceOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:0,status:"",cloudUrl:"",cloudBusy:false});prepOptions();stopAroma();stopHeat();stopPlate();resetCloudQr()}
 function prepOptions(){let d=dish();S.options=shuffle([...d.ingredients,...shuffle(wrongIngredients.filter(x=>!d.ingredients.includes(x))).slice(0,7)])}
 function setScreen(name){S.screen=name;["home","menu","game","postcard"].forEach(n=>$("#"+n+"Screen").classList.toggle("hidden",n!==name));if(name!=="game")stopAroma(),stopHeat(),stopPlate()}
 function renderMenu(){let d=dish();$("#currentDishPill").textContent="目前料理："+d.name;$("#dishGrid").innerHTML=dishes.map(x=>`<button class="dish-card ${x.id===S.dishId?"active":""}" type="button" data-dish="${x.id}"><img src="${asset(x.menuImg)}" alt="${x.name}手繪插圖"><div class="dish-card-content"><h3>${x.name}</h3><p>${x.ingredients.map(icon).join(" ")} ${x.ingredients.join("、")}</p></div></button>`).join("");document.querySelectorAll("[data-dish]").forEach(b=>b.onclick=()=>{S.dishId=b.dataset.dish;resetRun();renderMenu()});$("#menuDishIllustration").src=asset(d.menuImg);$("#menuDishIllustration").alt=d.name+"手繪插圖";$("#menuDishTitle").textContent=d.name;$("#menuDishIntro").textContent=d.intro;$("#menuIngredients").innerHTML=d.ingredients.map(i=>`<span class="chip">${icon(i)} ${i}</span>`).join("")}
@@ -317,20 +317,20 @@ function htmlHeat(){let st=heatStages[S.heatStage]||heatStages.at(-1),left=st.mi
 function stopPlate(){if(S.plateTimer){clearInterval(S.plateTimer);S.plateTimer=null}}
 function plateTimeLeft(){return S.plateDeadline?Math.max(0,Math.ceil((S.plateDeadline-Date.now())/1000)):45}
 function startPlateTimer(){if(!S.plateDeadline)S.plateDeadline=Date.now()+45000;if(S.plateTimer)return;S.plateTimer=setInterval(()=>{if(S.screen!=="game"||levels[S.level].key!=="plate"){stopPlate();return}let t=plateTimeLeft(),el=$("#plateTime");if(el)el.textContent=t;if(t<=0){S.status="timeup";stopPlate();renderGame()}},500)}
-function resetPlate(){Object.assign(S,{plateIndex:0,plateOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:Date.now()+45000,status:""});startPlateTimer();renderGame()}
+function resetPlate(){Object.assign(S,{plateIndex:0,plateOrder:[],plateChoiceOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:Date.now()+45000,status:""});startPlateTimer();renderGame()}
 function basePlatingPlan(){let d=dish();return[
  {id:"base",label:"放上大盤子",img:"plating/plate.png",x:50,y:54,size:250,targetSize:220,kind:"plate-base",tip:"先點大盤子，再點桌面中央的目標圈。"},
- {id:"sauce",label:"淋上醬汁",img:"plating/sauce.png",x:41,y:58,size:108,targetSize:68,kind:"sauce",tip:"醬汁會落在盤中左下方，靠近主食但不蓋住主角。"},
  {id:"main",label:"主食核心",img:"plating/main.png",x:52,y:53,size:122,targetSize:72,kind:"main",tip:"主食要放在盤中央，決定整盤視覺重心。"},
  {id:"side",label:"擺放配菜",img:"plating/side.png",x:64,y:47,size:74,targetSize:54,kind:"side",tip:"配菜放在盤中右上方，補上顏色和層次。"},
+ {id:"sauce",label:"淋上醬汁",img:"plating/sauce.png",x:41,y:58,size:108,targetSize:68,kind:"sauce",tip:"醬汁會落在盤中左下方，靠近主食但不蓋住主角。"},
  {id:"herb",label:"撒上香草",img:"plating/herb.png",x:58,y:41,size:66,targetSize:52,kind:"garnish",tip:"香草放在盤中上方，讓成品更有新鮮感。"},
- {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:68,y:65,size:70,targetSize:52,kind:"decor",tip:"裝飾放在盤子右邊，讓桌面更完整。"},
  {id:"fork",label:"左側餐叉",img:"plating/fork.png",x:33,y:55,size:72,targetSize:46,kind:"utensil",tip:"餐叉擺在盤子左側，位置要靠近盤緣。"},
- {id:"knife",label:"右側餐刀",img:"plating/knife.png",x:67,y:55,size:76,targetSize:46,kind:"utensil",tip:"餐刀擺在盤子右側，位置要靠近盤緣。"}
+ {id:"knife",label:"右側餐刀",img:"plating/knife.png",x:67,y:55,size:76,targetSize:46,kind:"utensil",tip:"餐刀擺在盤子右側，位置要靠近盤緣。"},
+ {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:68,y:65,size:104,targetSize:58,kind:"decor",tip:"裝飾放在盤子右邊，讓桌面更完整。"}
 ]}
 function shuffleList(list){let a=[...list];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function platingPlan(){if(!S.plateOrder.length){let plan=basePlatingPlan();S.plateOrder=[plan[0],...shuffleList(plan.slice(1))]}return S.plateOrder}
-function platingChoices(){let decoys=[{id:"tooMuch",label:"過多醬汁",icon:"🫗"},{id:"salt",label:"灑太多鹽",icon:"🧂"},{id:"empty",label:"空碗裝飾",icon:"🥣"}];return [...basePlatingPlan(),...decoys]}
+function platingPlan(){if(!S.plateOrder.length)S.plateOrder=basePlatingPlan();return S.plateOrder}
+function platingChoices(){let decoys=[{id:"tooMuch",label:"過多醬汁",icon:"🫗"},{id:"salt",label:"灑太多鹽",icon:"🧂"},{id:"empty",label:"空碗裝飾",icon:"🥣"}];if(!S.plateChoiceOrder.length)S.plateChoiceOrder=shuffleList([...basePlatingPlan(),...decoys]);return S.plateChoiceOrder}
 function pieceVisual(p){return p.img?`<img src="${asset(p.img)}" alt="${p.label}">`:`<span>${p.icon||""}</span>`}
 function pieceName(p){return `${p.icon?p.icon+" ":""}${p.label}`}
 function beautyScore(){let offset=S.placed.reduce((sum,p)=>sum+(p.penalty||0),0);return Math.max(0,100-S.plateMistakes*12-offset)}
