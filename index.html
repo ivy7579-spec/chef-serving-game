@@ -69,15 +69,25 @@ h1{margin:16px 0 10px;font-size:clamp(42px,6vw,78px);line-height:.96;letter-spac
 .pick{min-height:74px;border-radius:8px;background:#fff;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--ink);font-weight:900}
 .pick b{font-size:24px}.pick span{font-size:13px;text-align:center}
 .pick.selected{background:#e3f7ee;border-color:#19a37c;color:#065f46}
-.board{position:relative;min-height:310px;border-radius:8px;overflow:hidden;background:#c9925f;box-shadow:inset 0 -14px 24px rgba(88,47,20,.2)}
+.board{position:relative;display:block;width:100%;min-height:310px;border:0;border-radius:8px;overflow:hidden;background:#c9925f;box-shadow:inset 0 -14px 24px rgba(88,47,20,.2)}
 .board:before{content:"";position:absolute;inset:12px;border-radius:8px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0 9px,rgba(80,43,18,.06) 9px 18px)}
-.cut-target{position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);width:132px;height:132px;border-radius:999px;background:rgba(255,255,255,.42);display:grid;place-items:center;font-size:66px;box-shadow:0 16px 30px rgba(85,47,20,.18)}
+.cut-target{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%);width:132px;height:132px;border-radius:999px;background:rgba(255,255,255,.42);display:grid;place-items:center;font-size:66px;box-shadow:0 16px 30px rgba(85,47,20,.18);z-index:2}
 .cut-target.hit{animation:hit .25s ease}
 @keyframes hit{50%{transform:translate(-50%,-50%) scale(.86) rotate(-6deg)}}
 .board-label{position:absolute;left:50%;top:18px;transform:translateX(-50%);z-index:2;padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.82);font-weight:900;color:#6b3f20;white-space:nowrap}
-.knife{position:absolute;right:58px;top:70px;font-size:54px;z-index:2;transform:rotate(-18deg)}
-.knife.move{animation:knife .25s ease}
-@keyframes knife{50%{transform:rotate(-42deg) translate(-26px,32px)}}
+.knife-wrap{position:absolute;z-index:4;left:46%;top:43%;width:250px;height:180px;pointer-events:none;transform-origin:24% 30%;transform:translate(-50%,-50%) rotate(178deg)}
+.knife-wrap.move{animation:knifeChop .34s ease}
+@keyframes knifeChop{0%{transform:translate(-50%,-50%) rotate(178deg)}38%{transform:translate(-47%,-34%) rotate(145deg)}74%{transform:translate(-49%,-39%) rotate(192deg)}100%{transform:translate(-50%,-50%) rotate(178deg)}}
+.knife-blade{position:absolute;right:86px;top:72px;width:156px;height:56px;background:linear-gradient(180deg,#f8fafc 0%,#d9dee4 48%,#f3f6f9 100%);clip-path:polygon(0 44%,10% 0,88% 0,100% 18%,96% 100%,16% 100%,0 72%);transform:rotate(-35deg);box-shadow:0 11px 22px rgba(0,0,0,.22)}
+.knife-blade:after{content:"";position:absolute;left:20px;top:8px;width:104px;height:9px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.88),rgba(255,255,255,0));opacity:.9}
+.knife-bolster{position:absolute;right:91px;top:65px;width:19px;height:31px;background:linear-gradient(180deg,#d1d5db,#f8fafc);border-radius:4px;transform:rotate(-35deg);box-shadow:0 3px 8px rgba(0,0,0,.16)}
+.knife-handle{position:absolute;right:10px;top:39px;width:96px;height:30px;background:linear-gradient(180deg,#2b2b2b,#111827);border-radius:16px;transform:rotate(-35deg);box-shadow:0 7px 15px rgba(0,0,0,.28)}
+.knife-handle:before{content:"";position:absolute;left:-10px;top:4px;width:13px;height:21px;background:linear-gradient(180deg,#737373,#3f3f46);border-radius:4px}
+.knife-handle:after{content:"";position:absolute;left:20px;top:11px;width:7px;height:7px;border-radius:50%;background:#d4d4d8;box-shadow:20px 0 0 #d4d4d8,40px 0 0 #d4d4d8}
+.cut-name{position:absolute;z-index:3;left:50%;bottom:22px;transform:translateX(-50%);padding:9px 14px;border-radius:999px;background:rgba(255,255,255,.86);color:#6b3f20;font-weight:900;box-shadow:0 10px 22px rgba(85,47,20,.14)}
+.chop-spark{position:absolute;left:50%;top:50%;z-index:5;transform:translate(-50%,-50%);font-size:30px;opacity:0;pointer-events:none}
+.chop-spark.move{animation:spark .34s ease}
+@keyframes spark{0%{opacity:0;transform:translate(-50%,-38%) scale(.5)}45%{opacity:1;transform:translate(-50%,-52%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-72%) scale(1.35)}}
 .meter{position:relative;height:76px;border-radius:8px;background:linear-gradient(90deg,#2b211e,#7c2d12 38%,#f59e0b 50%,#7c2d12 62%,#2b211e);overflow:hidden}
 .sweet-zone{position:absolute;left:43%;top:0;width:18%;height:100%;background:rgba(255,255,255,.28);box-shadow:0 0 30px rgba(250,204,21,.8)}
 .needle{position:absolute;top:8px;bottom:8px;width:7px;border-radius:999px;background:#fff;left:10%;transform:translateX(-50%);box-shadow:0 0 16px rgba(255,255,255,.85)}
@@ -151,7 +161,7 @@ textarea:focus{border-color:#f59e0b}
         <div id="dishGrid" class="dish-grid"></div>
       </div></article>
       <aside class="card side-preview"><div class="card-pad">
-        <img id="menuDishImage" src="" alt="目前選擇料理">
+        <img id="menuDishImage" src="assets/dish-curry-rice.png" alt="目前選擇料理">
         <h2 id="menuDishTitle" class="section-title" style="margin-top:16px"></h2>
         <p id="menuDishIntro" style="color:var(--muted);line-height:1.75;margin:0"></p>
         <div id="menuIngredients" class="ingredient-cloud"></div>
@@ -167,7 +177,7 @@ textarea:focus{border-color:#f59e0b}
     </div>
     <div class="game-layout">
       <aside class="card">
-        <img id="levelImage" class="level-image" src="" alt="關卡圖片">
+        <img id="levelImage" class="level-image" src="assets/level-1.png" alt="關卡圖片">
         <div class="card-pad">
           <div id="steps" class="steps"></div>
           <button id="backMenuBtn" class="btn secondary" type="button" style="margin-top:14px">重選料理</button>
@@ -211,7 +221,7 @@ textarea:focus{border-color:#f59e0b}
             </div>
           </div>
           <div class="post-right">
-            <img id="postImage" src="" alt="完成料理圖片">
+            <img id="postImage" src="assets/dish-curry-rice.png" alt="完成料理圖片">
             <div class="stamp">主廚認證完成</div>
           </div>
         </div>
@@ -249,7 +259,7 @@ const levels=[
  {key:"ingredients",title:"挑選食材",img:"level-1.png",hint:"從食材區選出這道料理真正需要的材料。"},
  {key:"cut",title:"切配備料",img:"level-2.png",hint:"每個食材點擊切兩刀，全部處理完才能進下一關。"},
  {key:"aroma",title:"辛香爆香",img:"level-3.png",hint:"指針進入中央香氣區時翻炒，成功三次。"},
- {key:"heat",title:"火候烹調",img:"level-4-heat.png",hint:"依序完成小火、中火、大火三段溫度。"},
+ {key:"heat",title:"火候烹調",img:"level-4.png",hint:"依序完成小火、中火、大火三段溫度。"},
  {key:"plate",title:"擺盤上菜",img:"level-5-plating.png",hint:"依提示把每個擺盤元素放到正確順序。"}
 ];
 const wrongIngredients=["高麗菜","玉米","培根","檸檬","香菜","青花菜","辣椒","奶油","花椰菜","蘋果","海苔","芝麻"];
@@ -268,7 +278,7 @@ function renderSteps(){let h=levels.map((l,i)=>`<div class="step-row ${i<S.level
 function progress(){let d=dish(),key=levels[S.level].key;if(key==="ingredients")return S.chosen.filter(x=>d.ingredients.includes(x)).length/d.ingredients.length;if(key==="cut")return S.cutTotal/(d.ingredients.length*2);if(key==="aroma")return S.aromaScore/3;if(key==="heat")return (S.heatProgress.reduce((a,b)=>a+b,0))/300;if(key==="plate")return S.plateIndex/platingPlan().length;return 0}
 function canNext(){let d=dish(),key=levels[S.level].key;if(key==="ingredients")return S.chosen.length===d.ingredients.length&&d.ingredients.every(i=>S.chosen.includes(i));if(key==="cut")return S.cutTotal>=d.ingredients.length*2;if(key==="aroma")return S.aromaScore>=3;if(key==="heat")return S.heatStage>=heatStages.length;if(key==="plate")return S.plateIndex>=platingPlan().length;return false}
 function htmlIngredients(){let d=dish();let msg=S.chosen.length===0?"請選出正確食材。":canNext()?"食材正確，可以進下一關。":S.chosen.length>=d.ingredients.length?"有食材選錯，請重新檢查。":"繼續挑選需要的食材。";return `<div class="hint">本次料理需要：${d.ingredients.map(i=>`${icon(i)} ${i}`).join("、")}</div><div class="ingredient-grid">${S.options.map(i=>`<button class="pick ${S.chosen.includes(i)?"selected":""}" type="button" data-ing="${i}"><b>${icon(i)}</b><span>${i}</span></button>`).join("")}</div><div class="status ${canNext()?"good":S.chosen.length>=d.ingredients.length?"bad":""}" style="margin-top:14px">${msg}</div>`}
-function htmlCut(){let d=dish(),cur=d.ingredients[Math.min(S.cutIndex,d.ingredients.length-1)],total=d.ingredients.length*2;return `<div class="hint">現在處理：${icon(cur)} ${cur}。每個食材切 2 刀，總進度 ${S.cutTotal} / ${total}。</div><button id="cutBoard" class="board" type="button"><div class="board-label">${cur} ${S.cutHits}/2 刀</div><div class="knife ${S.cutMove?"move":""}">🔪</div><div class="cut-target ${S.cutMove?"hit":""}">${icon(cur)}</div></button><div class="status" style="margin-top:14px">${"▰".repeat(S.cutTotal)}${"▱".repeat(Math.max(total-S.cutTotal,0))}</div>`}
+function htmlCut(){let d=dish(),cur=d.ingredients[Math.min(S.cutIndex,d.ingredients.length-1)],total=d.ingredients.length*2;return `<div class="hint">現在處理：${icon(cur)} ${cur}。每個食材切 2 刀，總進度 ${S.cutTotal} / ${total}。</div><button id="cutBoard" class="board" type="button"><div class="board-label">${cur} ${S.cutHits}/2 刀</div><div class="knife-wrap ${S.cutMove?"move":""}"><div class="knife-blade"></div><div class="knife-bolster"></div><div class="knife-handle"></div></div><div class="chop-spark ${S.cutMove?"move":""}">✦</div><div class="cut-target ${S.cutMove?"hit":""}">${icon(cur)}</div><div class="cut-name">${cur}</div></button><div class="status" style="margin-top:14px">${"▰".repeat(S.cutTotal)}${"▱".repeat(Math.max(total-S.cutTotal,0))}</div>`}
 function startAroma(){if(S.aromaTimer)return;S.aromaTimer=setInterval(()=>{if(S.screen!=="game"||levels[S.level].key!=="aroma"){stopAroma();return}S.needle+=S.dir*3.8;if(S.needle>=97){S.needle=97;S.dir=-1}if(S.needle<=3){S.needle=3;S.dir=1}let n=$("#needle");if(n)n.style.left=S.needle+"%"},45)}
 function htmlAroma(){return `<div class="hint">指針進入中央亮色香氣區時，按下翻炒爆香。成功 ${S.aromaScore} / 3。</div><div class="meter"><div class="sweet-zone"></div><div id="needle" class="needle" style="left:${S.needle}%"></div></div><div class="score-dots">${[0,1,2].map(i=>`<span class="${i<S.aromaScore?"":"dim"}">🔥</span>`).join("")}</div><button id="stirBtn" class="btn primary" type="button">翻炒爆香</button><div class="status ${S.status==="good"?"good":S.status==="bad"?"bad":""}" style="margin-top:12px">${S.status==="good"?"香氣剛剛好。":S.status==="bad"?"時機差一點，再抓一次。":"等待指針進入香氣區。"}</div>`}
 function startHeat(){if(S.heatTimer)return;S.heatTimer=setInterval(()=>{if(S.screen!=="game"||levels[S.level].key!=="heat"){stopHeat();return}let st=heatStages[S.heatStage];if(!st){stopHeat();return}let delta=[-1.8,.7,1.7,3.1][S.heatPower];let cool=S.heatTemp>25?-.28:0;S.heatTemp=Math.max(18,Math.min(100,S.heatTemp+delta+cool));let ok=S.heatTemp>=st.min&&S.heatTemp<=st.max;if(ok){S.heatProgress[S.heatStage]=Math.min(100,S.heatProgress[S.heatStage]+7);S.status="good";if(S.heatProgress[S.heatStage]>=100){S.heatStage++;S.status="good"}}else{S.heatProgress[S.heatStage]=Math.max(0,S.heatProgress[S.heatStage]-2);S.status=S.heatTemp>st.max?"bad":""}renderGame()},420)}
