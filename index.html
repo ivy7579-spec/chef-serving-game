@@ -115,7 +115,7 @@ h1{margin:16px 0 10px;font-size:clamp(42px,6vw,78px);line-height:.96;letter-spac
 .placed.main{z-index:4}
 .placed.side,.placed.texture,.placed.garnish,.placed.highlight{z-index:5}
 .placed.sauce{z-index:3}
-.placed.decor,.placed.utensil{z-index:6}
+.placed.decor,.placed.utensil,.placed.wine{z-index:6}
 .beauty-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
 .beauty-card{padding:10px 12px;border-radius:8px;background:#fff;border:1px solid var(--line);text-align:center}
 .beauty-card small{display:block;color:#8b8178;font-size:11px;font-weight:900}.beauty-card strong{display:block;margin-top:3px;font-size:20px;color:#201a17}
@@ -343,9 +343,9 @@ function htmlAroma(){return `<div class="hint">指針進入中央亮色香氣區
 function startHeat(){if(S.heatTimer)return;S.heatTimer=setInterval(()=>{if(S.screen!=="game"||levels[S.level].key!=="heat"){stopHeat();return}let st=heatStages[S.heatStage];if(!st){stopHeat();return}let delta=[-1.8,.7,1.7,3.1][S.heatPower];let cool=S.heatTemp>25?-.28:0;S.heatTemp=Math.max(18,Math.min(100,S.heatTemp+delta+cool));let ok=S.heatTemp>=st.min&&S.heatTemp<=st.max;if(ok){S.heatProgress[S.heatStage]=Math.min(100,S.heatProgress[S.heatStage]+7);S.status="good";if(S.heatProgress[S.heatStage]>=100){S.heatStage++;S.status="good"}}else{S.heatProgress[S.heatStage]=Math.max(0,S.heatProgress[S.heatStage]-2);S.status=S.heatTemp>st.max?"bad":""}renderGame()},420)}
 function htmlHeat(){let st=heatStages[S.heatStage]||heatStages.at(-1),left=st.min,w=st.max-st.min,tp=S.heatTemp,prog=S.heatProgress[Math.min(S.heatStage,2)]||100;let done=S.heatStage>=heatStages.length;return `<div class="hint">${done?"火候完成，準備擺盤。":"目前階段："+st.name+"，請讓溫度維持在綠色區間。"}</div><div class="heat-panel"><div class="thermo"><div class="heat-zone" style="left:${left}%;width:${w}%"></div><div class="temp" style="left:${tp}%"></div></div><div class="heat-buttons">${["關火","小火","中火","大火"].map((n,i)=>`<button class="${S.heatPower===i?"active":""}" type="button" data-heat="${i}">${n}</button>`).join("")}</div><div class="progress" style="margin:0"><span style="width:${prog}%"></span></div><div class="status ${S.status==="good"?"good":S.status==="bad"?"bad":""}">溫度 ${Math.round(S.heatTemp)}°C｜${done?"三段火候完成":st.name}</div></div>`}
 function stopPlate(){if(S.plateTimer){clearInterval(S.plateTimer);S.plateTimer=null}}
-function plateTimeLeft(){return S.plateDeadline?Math.max(0,Math.ceil((S.plateDeadline-Date.now())/1000)):45}
-function startPlateTimer(){if(!S.plateDeadline)S.plateDeadline=Date.now()+45000;if(S.plateTimer)return;S.plateTimer=setInterval(()=>{if(S.screen!=="game"||levels[S.level].key!=="plate"){stopPlate();return}let t=plateTimeLeft(),el=$("#plateTime");if(el)el.textContent=t;if(t<=0){S.status="timeup";stopPlate();renderGame()}},500)}
-function resetPlate(){Object.assign(S,{plateIndex:0,plateOrder:[],plateChoiceOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:Date.now()+45000,status:""});startPlateTimer();renderGame()}
+function plateTimeLeft(){return S.plateDeadline?Math.max(0,Math.ceil((S.plateDeadline-Date.now())/1000)):52}
+function startPlateTimer(){if(!S.plateDeadline)S.plateDeadline=Date.now()+52000;if(S.plateTimer)return;S.plateTimer=setInterval(()=>{if(S.screen!=="game"||levels[S.level].key!=="plate"){stopPlate();return}let t=plateTimeLeft(),el=$("#plateTime");if(el)el.textContent=t;if(t<=0){S.status="timeup";stopPlate();renderGame()}},500)}
+function resetPlate(){Object.assign(S,{plateIndex:0,plateOrder:[],plateChoiceOrder:[],placed:[],plateMistakes:0,plateSelected:"",plateDeadline:Date.now()+52000,status:""});startPlateTimer();renderGame()}
 function basePlatingPlan(){let d=dish();return[
  {id:"base",label:"放上大盤子",img:"plating/plate.png",x:50,y:54,size:250,targetSize:220,kind:"plate-base",tip:"先點大盤子，再點桌面中央的目標圈。"},
  {id:"main",label:"主食核心",img:"plating/main.png",x:52,y:53,size:122,targetSize:72,kind:"main",tip:"主食要放在盤中央，決定整盤視覺重心。"},
@@ -354,7 +354,8 @@ function basePlatingPlan(){let d=dish();return[
  {id:"herb",label:"撒上香草",img:"plating/herb.png",x:58,y:41,size:66,targetSize:52,kind:"garnish",tip:"香草放在盤中上方，讓成品更有新鮮感。"},
  {id:"fork",label:"左側餐叉",img:"plating/fork.png",x:33,y:55,size:72,targetSize:46,kind:"utensil",tip:"餐叉擺在盤子左側，位置要靠近盤緣。"},
  {id:"knife",label:"右側餐刀",img:"plating/knife.png",x:74,y:58,size:84,targetSize:46,kind:"utensil",tip:"餐刀擺在盤子右側，位置要靠近盤緣。"},
- {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:84,y:58,size:130,targetSize:66,kind:"decor",tip:"裝飾放在餐刀右邊，讓桌面更完整。"}
+ {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:84,y:58,size:130,targetSize:66,kind:"decor",tip:"裝飾放在餐刀右邊，讓桌面更完整。"},
+ {id:"wine",label:"倒入紅酒",img:"plating/wine.png",x:22,y:54,size:92,targetSize:54,kind:"wine",tip:"紅酒杯放在餐叉左邊，完成餐桌儀式感。"}
 ]}
 function shuffleList(list){let a=[...list];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function platingPlan(){if(!S.plateOrder.length)S.plateOrder=basePlatingPlan();return S.plateOrder}
