@@ -234,11 +234,11 @@ textarea:focus{border-color:#f59e0b}
   <section id="videoScreen" class="screen hidden">
     <div class="topbar">
       <div class="brand"><div class="brand-mark">🎬</div><span>出餐完成</span></div>
-      <span class="pill">第五關完成</span>
+      <span class="pill" id="videoDishPill">第五關完成</span>
     </div>
     <div class="video-stage">
       <article class="video-panel">
-        <h2>完成上菜，準備寄出主廚明信片</h2>
+        <h2 id="videoTitle">完成上菜，準備寄出主廚明信片</h2>
         <p>先看完這段出餐影片，再把今天的料理心情做成明信片。</p>
         <video id="finalVideo" class="final-video" src="assets/c121a182-564f-4972-830e-55b66d6efce2.mp4" playsinline controls preload="auto"></video>
         <div class="video-actions">
@@ -313,6 +313,8 @@ const dishes=[
  {id:"creamy-napa",name:"雞肉奶油燉白菜",img:"dish-creamy-chicken-napa.png",menuImg:"今日料理/螢幕擷取畫面 2026-05-26 184139.png",intro:"奶油湯汁包住雞肉和白菜，口感柔和溫暖。",ingredients:["雞肉","白菜","鮮奶油","蘑菇","高湯"],plate:"白菜鋪出柔軟線條，雞肉置中，奶油醬汁保持乾淨。"},
  {id:"red-wine-beef",name:"紅酒燉牛肉",img:"dish-red-wine-beef.png",menuImg:"今日料理/螢幕擷取畫面 2026-05-26 184144.png",intro:"牛肉慢燉到軟嫩，紅酒醬汁帶出深色香氣。",ingredients:["牛肉","紅酒","紅蘿蔔","蘑菇","洋蔥"],plate:"牛肉塊放在中央，紅蘿蔔和蘑菇圍出濃郁層次。"}
 ];
+const defaultEndingVideo="c121a182-564f-4972-830e-55b66d6efce2.mp4";
+const endingVideos={curry:"ending-curry-rice.mp4",risotto:"ending-veggie-risotto.mp4",pasta:"ending-tomato-cream-pasta.mp4",beef:"ending-black-pepper-beef-rice.mp4",chicken:"ending-three-cup-chicken.mp4",shrimp:"ending-shrimp-fried-rice.mp4",tofu:"ending-pan-fried-veggie-tofu.mp4",soup:"ending-pumpkin-soup.mp4","seafood-pot":"ending-seafood-vermicelli-tofu-pot.mp4","ginger-intestine":"ending-ginger-intestine.mp4","creamy-napa":"ending-creamy-chicken-napa.mp4","red-wine-beef":"ending-red-wine-beef.mp4"};
 const levels=[
  {key:"ingredients",title:"挑選食材",img:"level-1.png",banner:"BENNER/level-1-banner.png",hint:"從食材區選出這道料理真正需要的材料。"},
  {key:"cut",title:"切配備料",img:"level-2.png",banner:"BENNER/level-2-banner.png",hint:"每個食材點擊切兩刀，全部處理完才能進下一關。"},
@@ -370,7 +372,8 @@ function breakEvery(text,size=20){let chars=Array.from(String(text));let rows=[]
 function renderPostcard(){let d=dish(),msg=postcardMessage();$("#postDishPill").textContent=d.name;$("#postTitle").textContent=d.name;$("#postMessage").textContent=breakEvery(msg);$("#postImage").src=asset(d.img);$("#postChips").innerHTML=d.ingredients.map(i=>`<span class="chip">${icon(i)} ${i}</span>`).join("")}
 function resetCloudQr(){S.cloudUrl="";let img=$("#qrImage"),link=$("#cloudLink"),ph=$("#qrPlaceholder"),st=$("#cloudStatus");if(img){img.classList.add("hidden");img.removeAttribute("src")}if(link){link.classList.add("hidden");link.removeAttribute("href");link.textContent=""}if(ph)ph.classList.remove("hidden");if(st){st.textContent="請先打完明信片文字，再按「生成 QR Code」。";st.className="status"}}
 function showPostcard(){renderPostcard();resetCloudQr();setScreen("postcard")}
-function startFinalVideo(){stopAroma();stopHeat();stopPlate();setScreen("video");let v=$("#finalVideo"),st=$("#videoStatus");if(!v){showPostcard();return}v.currentTime=0;if(st){st.textContent="正在播放出餐影片，播完後會自動進入明信片製作。";st.className="status"}let p=v.play();if(p&&p.catch)p.catch(()=>{if(st){st.textContent="請按影片播放，或直接按「製作明信片」。";st.className="status"}})}
+async function endingVideoSrc(){let name=endingVideos[dish().id]||defaultEndingVideo;if(name!==defaultEndingVideo){try{let r=await fetch(asset(name),{method:"HEAD",cache:"no-store"});if(r.ok)return asset(name)}catch(e){}}return asset(defaultEndingVideo)}
+async function startFinalVideo(){stopAroma();stopHeat();stopPlate();let d=dish();$("#videoDishPill").textContent=d.name;$("#videoTitle").textContent=`${d.name} 完成上菜`;setScreen("video");let v=$("#finalVideo"),st=$("#videoStatus");if(!v){showPostcard();return}let src=await endingVideoSrc();if(S.screen!=="video")return;if(v.getAttribute("src")!==src){v.src=src;v.load()}try{v.currentTime=0}catch(e){}if(st){st.textContent="正在播放出餐影片，播完後會自動進入明信片製作。";st.className="status"}let p=v.play();if(p&&p.catch)p.catch(()=>{if(st){st.textContent="請按影片播放，或直接按「製作明信片」。";st.className="status"}})}
 function replayFinalVideo(){let v=$("#finalVideo"),st=$("#videoStatus");if(!v)return;v.currentTime=0;if(st){st.textContent="重新播放出餐影片。";st.className="status"}let p=v.play();if(p&&p.catch)p.catch(()=>{})}
 function canvasToBlob(canvas){return new Promise((res,rej)=>canvas.toBlob(blob=>blob?res(blob):rej(new Error("canvas blob failed")),"image/png"))}
 async function uploadToCloud(blob){let name=`chef-postcard-${Date.now()}.png`;let fd=new FormData();fd.append("file",blob,name);let tmp=await fetch("https://tmpfiles.org/api/v1/upload",{method:"POST",body:fd});let data=await tmp.json();if(data.status==="success"&&data.data&&data.data.url)return data.data.url.replace("https://tmpfiles.org/","https://tmpfiles.org/dl/");throw new Error("upload failed")}
