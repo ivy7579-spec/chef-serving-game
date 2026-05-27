@@ -355,7 +355,7 @@ function basePlatingPlan(){let d=dish();return[
  {id:"fork",label:"左側餐叉",img:"plating/fork.png",x:33,y:55,size:72,targetSize:46,kind:"utensil",tip:"餐叉擺在盤子左側，位置要靠近盤緣。"},
  {id:"knife",label:"右側餐刀",img:"plating/knife.png",x:74,y:58,size:84,targetSize:46,kind:"utensil",tip:"餐刀擺在盤子右側，位置要靠近盤緣。"},
  {id:"decor",label:"餐桌裝飾",img:"plating/decor.png",x:84,y:58,size:130,targetSize:66,kind:"decor",tip:"裝飾放在餐刀右邊，讓桌面更完整。"},
- {id:"wine",label:"倒入紅酒",img:"plating/wine.png",x:22,y:54,size:92,targetSize:54,kind:"wine",tip:"紅酒杯放在餐叉左邊，完成餐桌儀式感。"}
+ {id:"wine",label:"倒入紅酒",img:"plating/wine.png",x:22,y:53,size:126,targetSize:64,kind:"wine",tip:"紅酒杯放在餐叉左邊，完成餐桌儀式感。"}
 ]}
 function shuffleList(list){let a=[...list];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function platingPlan(){if(!S.plateOrder.length)S.plateOrder=basePlatingPlan();return S.plateOrder}
